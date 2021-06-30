@@ -20,7 +20,6 @@ import tensorflow as tf
 from sedna.backend.base import BackendBase
 from sedna.common.file_ops import FileOps
 
-
 if hasattr(tf, "compat"):
     # version 2.0 tf
     ConfigProto = tf.compat.v1.ConfigProto

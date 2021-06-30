@@ -13,23 +13,22 @@
 # limitations under the License.
 
 import time
-from typing import List, Optional, Dict, Any
-
 import uuid
-from pydantic import BaseModel
+from typing import Any, Dict, List, Optional
+
 from fastapi import FastAPI, WebSocket
 from fastapi.routing import APIRoute
+from pydantic import BaseModel
+from starlette.endpoints import WebSocketEndpoint
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 from starlette.routing import WebSocketRoute
-from starlette.endpoints import WebSocketEndpoint
 from starlette.types import ASGIApp, Receive, Scope, Send
 
+from sedna.algorithms.aggregation import AggClient
+from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.common.log import LOGGER
 from sedna.common.utils import get_host_ip
-from sedna.common.class_factory import ClassFactory, ClassType
-from sedna.algorithms.aggregation import AggClient
-
 from .base import BaseServer
 
 __all__ = ('AggregationServer',)

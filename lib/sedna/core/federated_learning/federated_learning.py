@@ -27,7 +27,7 @@ class FederatedLearning(JobBase):
     Federated learning
     """
 
-    def __init__(self, estimator, aggregation="FedAvg"):
+    def __init__(self, estimator, aggregation="FedAvg", transmitter="sample"):
         """
         Initial a FederatedLearning job
         :param estimator: Customize estimator
@@ -49,6 +49,7 @@ class FederatedLearning(JobBase):
         self.aggregation = ClassFactory.get_cls(ClassType.FL_AGG, aggregation)
 
         connect_timeout = int(Context.get_parameters("CONNECT_TIMEOUT", "300"))
+        self.transmitter = ClassFactory.get_cls(ClassType.TRANSMITTER, transmitter)
         self.node = None
         self.register(timeout=connect_timeout)
 

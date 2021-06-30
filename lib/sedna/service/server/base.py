@@ -13,9 +13,8 @@
 # limitations under the License.
 
 import contextlib
-import time
 import threading
-import asyncio
+import time
 
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
@@ -52,8 +51,8 @@ class BaseServer:
             grpc_port: int = 8081,
             workers: int = 1,
             ws_size: int = 16 *
-            1024 *
-            1024,
+                           1024 *
+                           1024,
             ssl_key=None,
             ssl_cert=None,
             timeout=300):
