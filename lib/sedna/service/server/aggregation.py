@@ -31,7 +31,7 @@ from sedna.common.log import LOGGER
 from sedna.common.utils import get_host_ip
 from .base import BaseServer
 
-__all__ = ('AggregationServer',)
+__all__ = ('AggregationServer', 'PlatoServer', 'MistnetServer',)
 
 
 class WSClientInfo(BaseModel):  # pylint: disable=too-few-public-methods
@@ -265,3 +265,20 @@ class AggregationServer(BaseServer):
         if client_id:
             return server.get_client(client_id)
         return WSClientInfoList(clients=server.client_list)
+
+
+import os
+
+os.environ['config_file'] = '/home/work/server.yml'
+from plato.servers import fedavg
+from plato.servers import mistnet
+
+
+class PlatoServer(fedavg.Server):
+    def __init__(self, model=None):
+        super().__init__(model)
+
+
+class MistnetServer(mistnet.Server):
+    def __init__(self, model=None, trainer=None):
+        super().__init__()
