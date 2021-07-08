@@ -8,11 +8,11 @@ class Transmitter(ABC):
         pass
 
     @abstractmethod
-    def send(self):
+    def send(self, data):
         pass
 
     @abstractmethod
-    def compress(self):  # 传输的内容可能有：weights，压缩后的weights， 特征向量，蒸馏后的数据
+    def compress(self):  # for compressing weights, feature data, data after distillation
         pass
 
     @abstractmethod

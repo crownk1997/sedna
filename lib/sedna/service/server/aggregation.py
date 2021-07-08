@@ -274,7 +274,7 @@ from plato.servers import fedavg
 from plato.servers import mistnet
 
 
-class PlatoServer(fedavg.Server):
+class FedServer(fedavg.Server):
     def __init__(self, model=None):
         super().__init__(model)
 
