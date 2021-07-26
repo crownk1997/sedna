@@ -37,8 +37,33 @@ type FederatedLearningJob struct {
 
 // FLJobSpec is a description of a federatedlearning job
 type FLJobSpec struct {
+    StopCondition     Condition     `json:"stopCondition,omitempty"`
+    Transmitter       Transmitter       `json:"transmitter,omitempty"`
+    AggregationTrigger  AggregationTrigger `json:"aggregationTrigger,omitempty"`
 	AggregationWorker AggregationWorker `json:"aggregationWorker"`
 	TrainingWorkers   []TrainingWorker  `json:"trainingWorkers"`
+}
+
+// StopCondition describes the exit conditions for federated learning job
+type StopCondition struct {
+    CompositeOperator    CompositeOperator      `json:"operator"`
+}
+
+type CompositeOperator struct {
+   Conditions  []Condition     `json:"conditions"`
+}
+
+type Transmitter struct {
+    TransmitterAlgorithms   []TransmitterAlgorithm  `json:transmitterAlgorithms`
+}
+
+type TransmitterAlgorithm struct {
+    Name    string  `json:"name"`
+    Parameters []ParaSpec `json:"parameters,omitempty"`
+}
+
+type AggregationTrigger struct {
+    Condition   Condition   `json:"condition"`
 }
 
 // AggregationWorker describes the data an aggregation worker should have

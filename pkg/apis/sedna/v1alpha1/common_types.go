@@ -27,3 +27,9 @@ type ParaSpec struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }
+
+type Condition struct {
+	Operator  string  `json:"operator"`
+	Threshold float64 `json:"threshold"`
+	Metric    string  `json:"metric"`
+}
