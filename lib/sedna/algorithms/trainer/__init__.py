@@ -12,8 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .aggregation import *
-from .hard_example_mining import *
-from .multi_task_learning import *
-from .unseen_task_detect import *
-from .trainer import *
+
+"""Aggregation algorithms"""
+
+# TODO: merge with aggregation
+
+import abc
+from copy import deepcopy
+
+import numpy as np
+
+from sedna.common.class_factory import ClassFactory, ClassType
+
+__all__ = ('BasicTrainer')
+
+from plato.trainers import basic
+
+class BasicTrainer(basic.Trainer):
+    def __init__(self):
+        super().__init__()

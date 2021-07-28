@@ -21,7 +21,9 @@ import pandas as pd
 from sedna.common.file_ops import FileOps
 from sedna.common.class_factory import ClassFactory, ClassType
 
-__all__ = ('BaseDataSource', 'TxtDataParse', 'CSVDataParse')
+from plato.datasources import base
+
+__all__ = ('BaseDataSource', 'TxtDataParse', 'CSVDataParse', 'PyTorchDataSource')
 
 
 class BaseDataSource:
@@ -131,4 +133,7 @@ class CSVDataParse(BaseDataSource, ABC):
         self.x = pd.concat(x_data)
         self.y = pd.concat(y_data)
 
-
+class PyTorchDataSource(base.DataSource):
+    def __init__(self):
+        super().__init__()
+        
