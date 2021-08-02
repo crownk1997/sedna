@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from sedna.service.server import PlatoServer
+from sedna.service.server import FedServer
 from torch import nn
 
 if __name__ == '__main__':
@@ -26,5 +26,5 @@ if __name__ == '__main__':
         nn.Linear(128, 10),
     )
 
-    server = PlatoServer(model=model)
+    server = FedServer(model=model)
     server.run()
