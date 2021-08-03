@@ -1,12 +1,10 @@
-# Collaboratively Train Using MistNet on MNIST Dataset
+# Collaboratively Train Yolo-v5 Using MistNet on COCO128 Dataset
 This case introduces how to train a federated learning job with an aggregation algorithm named MistNet in MNIST handwritten digit classification scenario. Data is scattered in different places (such as edge nodes, cameras, and others) and cannot be aggregated at the server due to data privacy and bandwidth. As a result, we cannot use all the data for training. In some cases, edge nodes have limited computing resources and even have no training capability. The edge cannot gain the updated weights from the training process. Therefore, traditional algorithms (e.g., federated average), which usually aggregate the updated weights trained by different edge clients, cannot work in this scenario. MistNet is proposed to address this issue. 
 
  MistNet partitions a DNN model into two parts, a lightweight feature extractor at the edge side to generate meaningful features from the raw data, and a classifier including the most model layers at the cloud to be iteratively trained for specific tasks. MistNet achieves acceptable model utility while greatly reducing privacy leakage from the released intermediate features. 
- 
 
 
-
-## Surface Defect Detection Experiment
+## Object Detection Experiment
 > Assume that there are two edge nodes and a cloud node. Data on the edge nodes cannot be migrated to the cloud due to privacy issues.
 > Base on this scenario, we will demonstrate the mnist example.
 
@@ -23,25 +21,26 @@ Follow the [Sedna installation document](/docs/setup/install.md) to install Sedn
  
 ### Prepare Dataset
 
-Download [dataset](https://data.deepai.org/mnist.zip) and do data partition
+Download [dataset](https://github.com/ultralytics/yolov5/releases/download/v1.0/coco128.zip) and do data partition
 ```
-wget https://data.deepai.org/mnist.zip
-unzip mnist.zip
-python partition.py ./mnist 2
+wget https://github.com/ultralytics/yolov5/releases/download/v1.0/coco128.zip
+unzip coco128.zip -d data
+rm coco128.zip
+python partition.py ./data 2
 ```
 
-move ```./mnist/1``` to `/data` of ```EDGE1_NODE```.  
+move ```./data/1``` to `/data` of ```EDGE1_NODE```.  
 ```
 mkdir -p /data
 cd /data
-mv ./mnist/1 ./
+mv ./data/1 ./
 ```
 
-move ```./mnist/2``` to `/data` of ```EDGE2_NODE```.
+move ```./data/2``` to `/data` of ```EDGE2_NODE```.
 ```
 mkdir -p /data
 cd /data
-mv ./mnist/2 ./
+mv ./data/2 ./
 ```
 
 ### Prepare Images

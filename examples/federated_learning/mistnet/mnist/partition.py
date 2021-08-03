@@ -112,7 +112,7 @@ num_train_samples = int(train_data.shape[0]/num_partition)
 num_test_samples = int(test_data.shape[0]/num_partition)
 
 for i in range(num_partition-1):
-    sub_path = os.path.join(path, str(i))
+    sub_path = os.path.join(path, str(i+1))
     if os.path.exists(sub_path) == False:
         os.mkdir(sub_path)
     train_start = i*num_train_samples
@@ -124,7 +124,7 @@ for i in range(num_partition-1):
     torch.save(test_data[test_start:test_end], os.path.join(sub_path, test_file))
     torch.save(test_labels[test_start:test_end], os.path.join(sub_path, test_label_file))
 
-sub_path = os.path.join(path, str(num_partition-1))
+sub_path = os.path.join(path, str(num_partition))
 if os.path.exists(sub_path) == False:
     os.mkdir(sub_path)
 train_start = (num_partition-1)*num_train_samples
