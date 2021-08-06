@@ -30,3 +30,12 @@ tensorflow-datasets
 torch==1.7.1+cpu 
 -f https://download.pytorch.org/whl/torch_stable.html
 torchvision==0.2.2.post3
+
+Cython
+opencv-python>=4.1.2
+Pillow
+tensorboard>=2.2
+tqdm>=4.41.0
+seaborn>=0.11.0
+thop 
+pycocotools-fix>=2.0  # COCO mAP

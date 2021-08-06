@@ -20,7 +20,10 @@ from sedna.common.file_ops import FileOps
 from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.service.client import AggregationClient
 from sedna.common.constant import K8sResourceKindStatus
-from plato.clients import simple
+
+import asyncio
+from plato.clients import registry as client_registry
+from plato.config import Config
 
 class FederatedLearning(JobBase):
     """
@@ -145,12 +148,29 @@ class FederatedLearning(JobBase):
                     K8sResourceKindStatus.RUNNING.value,
                     task_info_res)
 
-class FLWorker(simple.Client):
-    def __init__(self, model=None, datasource=None, trainer=None):
-        super().__init__(model=model, datasource=datasource, trainer=trainer)
-
-from plato.clients import mistnet
-class MistWorker(mistnet.Client):
-    def __init__(self, model=None, datasource=None, trainer=None):
-        super().__init__(model=model, datasource=datasource, trainer=trainer)
-
+class FederatedLearningv2():
+    def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None) -> None:
+        # set parameters
+        if data != None:
+            Config.data = Config.namedtuple_from_dict(data)
+            
+        if trainer != None:
+            Config.trainer = Config.namedtuple_from_dict(trainer)
+            
+        if aggregation != None:
+            Config.algorithm = Config.namedtuple_from_dict(aggregation)
+            if aggregation["type"] == "mistnet":
+                Config.clients.type = "mistnet"
+                Config.server.type = "mistnet"
+            
+        if transmitter != None:
+            Config.server.address = transmitter["address"]
+            Config.server.port = transmitter["port"]
+            
+        # create a client
+        self.client = client_registry.get()
+        self.client.configure()
+    
+    def train():
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(self.client.start_client())

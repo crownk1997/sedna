@@ -1,36 +1,126 @@
 
-from sedna.datasources import PyTorchDataSource
-from sedna.algorithms.trainer import BasicTrainer
-from torch.utils.data import Dataset
-# use default trainer, the user can also overwrite some functions
-class Trainer(BasicTrainer):
-    def __init__(self):
-        super().__init__()
 
-class CustomDataSet(Dataset):
-    def __init__(self, data, labels):
-        self.data = data
-        self.labels = labels
+data = {
+    "datasource": "YOLO", 
+    "data_params": "./coco128.yaml", 
+    # Where the dataset is located
+    "data_path": "./data/COCO",
+    "train_path": "./data/COCO/coco128/images/train2017/",
+    "test_path": "./data/COCO/coco128/images/train2017/",
+    # number of training examples
+    "num_train_examples": 128,
+    # number of testing examples
+    "num_test_examples": 128,
+    # number of classes
+    "num_classes": 80,
+    # image size
+    "image_size": 640,
+    "classes":
+    [
+        "person",
+        "bicycle",
+        "car",
+        "motorcycle",
+        "airplane",
+        "bus",
+        "train",
+        "truck",
+        "boat",
+        "traffic light",
+        "fire hydrant",
+        "stop sign",
+        "parking meter",
+        "bench",
+        "bird",
+        "cat",
+        "dog",
+        "horse",
+        "sheep",
+        "cow",
+        "elephant",
+        "bear",
+        "zebra",
+        "giraffe",
+        "backpack",
+        "umbrella",
+        "handbag",
+        "tie",
+        "suitcase",
+        "frisbee",
+        "skis",
+        "snowboard",
+        "sports ball",
+        "kite",
+        "baseball bat",
+        "baseball glove",
+        "skateboard",
+        "surfboard",
+        "tennis racket",
+        "bottle",
+        "wine glass",
+        "cup",
+        "fork",
+        "knife",
+        "spoon",
+        "bowl",
+        "banana",
+        "apple",
+        "sandwich",
+        "orange",
+        "broccoli",
+        "carrot",
+        "hot dog",
+        "pizza",
+        "donut",
+        "cake",
+        "chair",
+        "couch",
+        "potted plant",
+        "bed",
+        "dining table",
+        "toilet",
+        "tv",
+        "laptop",
+        "mouse",
+        "remote",
+        "keyboard",
+        "cell phone",
+        "microwave",
+        "oven",
+        "toaster",
+        "sink",
+        "refrigerator",
+        "book",
+        "clock",
+        "vase",
+        "scissors",
+        "teddy bear",
+        "hair drier",
+        "toothbrush",
+    ], 
+}
     
-    def __len__(self):
-        return len(self.data)
+trainer = {
+    "type": "yolov5", 
+    "rounds": 1,
+    "target_accuracy": 0.99,
+    "epochs": 500,
+    "batch_size": 16,
+    "optimizer": SGD,
+    "linear_lr": false,
+    # The machine learning model 
+    "model_name": yolov5,
+    "model_config": "./yolov5s.yaml",
+    "train_params": "./hyp.scratch.yaml"
+}
     
-    def __getitem__(self, idx):
-        return self.data[idx], self.labels[idx]
-
-class Data(PyTorchDataSource):
-    def __init__(self, path):
-        super().__init__()
-        # build training set and testing set
-        training_file = 'training_data.pt'
-        training_label_file = 'training_label.pt'
-        test_file = 'test_data.pt'
-        test_label_file = 'test_label.pt'
-        
-        train_data = torch.load(os.path.join(path, training_file))
-        train_labels = torch.load(os.path.join(path, training_label_file))
-        test_data = torch.load(os.path.join(path, test_file))
-        test_labels = torch.load(os.path.join(path, test_label_file))
-        
-        self.trainset = CustomDataSet(train_data, train_labels)
-        self.testset = CustomDataSet(test_data, test_labels)
+aggregation = {
+    "type": "mistnet",
+    "cut_layer": 4,
+    "epsilon": 100
+}
+    
+transmitter = {
+    "address": "127.0.0.1",
+    "port": 8000
+}

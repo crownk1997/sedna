@@ -31,10 +31,10 @@ from sedna.common.log import LOGGER
 from sedna.common.utils import get_host_ip
 from .base import BaseServer
 
-from plato.servers import fedavg
-from plato.servers import mistnet
+from plato.servers import registry as server_registry
+from plato.config import Config
 
-__all__ = ('AggregationServer', 'FedServer', 'MistnetServer',)
+__all__ = ('AggregationServer', 'AggregationServerv2')
 
 
 class WSClientInfo(BaseModel):  # pylint: disable=too-few-public-methods
@@ -45,10 +45,8 @@ class WSClientInfo(BaseModel):  # pylint: disable=too-few-public-methods
     connected_at: float
     info: Any
 
-
 class WSClientInfoList(BaseModel):  # pylint: disable=too-few-public-methods
     clients: List
-
 
 class WSEventMiddleware:  # pylint: disable=too-few-public-methods
     def __init__(self, app: ASGIApp, **kwargs):
@@ -63,7 +61,6 @@ class WSEventMiddleware:  # pylint: disable=too-few-public-methods
         # exit agg server if job complete
         scope["app"].shutdown = (self._server.exit_check()
                                  and self._server.empty)
-
 
 class WSServerBase:
     def __init__(self):
@@ -120,7 +117,6 @@ class WSServerBase:
             await websocket.send_json({"type": "CLIENT_JOIN",
                                        "data": client_id})
 
-
 class Aggregator(WSServerBase):
     def __init__(self, **kwargs):
         super(Aggregator, self).__init__()
@@ -169,7 +165,6 @@ class Aggregator(WSServerBase):
     def exit_check(self):
         return self.current_round >= self.exit_round
 
-
 class BroadcastWs(WebSocketEndpoint):
     encoding: str = "json"
     session_name: str = ""
@@ -206,7 +201,6 @@ class BroadcastWs(WebSocketEndpoint):
             raise RuntimeError(
                 "on_receive() called without a valid client_id")
         await self.server.send_message(self.client_id, msg)
-
 
 class AggregationServer(BaseServer):
     def __init__(
@@ -269,11 +263,26 @@ class AggregationServer(BaseServer):
             return server.get_client(client_id)
         return WSClientInfoList(clients=server.client_list)
 
-class FedServer(fedavg.Server):
-    def __init__(self, model=None):
-        super().__init__(model)
-
-
-class MistnetServer(mistnet.Server):
-    def __init__(self, model=None, trainer=None):
-        super().__init__()
+class AggregationServerv2():
+    def __init__(self, trainer=None, aggregation=None, transmitter=None, choose=None) -> None:
+        # set parameters
+        if trainer != None:
+            Config.trainer = Config.namedtuple_from_dict(trainer)
+            
+        if aggregation != None:
+            Config.algorithm = Config.namedtuple_from_dict(aggregation)
+            if aggregation["type"] == "mistnet":
+                Config.clients.type = "mistnet"
+                Config.server.type = "mistnet"
+            
+        if transmitter != None:
+            Config.server.address = transmitter["address"]
+            Config.server.port = transmitter["port"]
+            
+        if choose != None:
+            Config.clients.per_round = choose["per_round"]
+        # create a server
+        self.server = server_registry.get()
+    
+    def start():
+        self.server.run()
