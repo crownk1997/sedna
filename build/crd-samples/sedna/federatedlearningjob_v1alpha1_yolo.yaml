@@ -5,16 +5,16 @@ metadata:
 spec:
   stopCondition:
     operator: "or" # and
-      conditions:
-        - operator: ">"
-          threshold: 100
-          metric: rounds
-        - operator: ">"
-          threshold: 0.95
-          metric: target_accuracy
-        - operator: "<"
-          threshold: 0.03
-          metric: delta_loss
+    conditions:
+      - operator: ">"
+        threshold: 100
+        metric: rounds
+      - operator: ">"
+        threshold: 0.95
+        metric: target_accuracy
+      - operator: "<"
+        threshold: 0.03
+        metric: delta_loss
   transimitter:
     transimitterAlgorithms:
       - name: "simple" # simple, adaptive_freezing, adaptive_sync ...
@@ -33,6 +33,9 @@ spec:
           - image: kubeedge/sedna-fl-aggregation:mistnetyolo
             name: agg-worker
             imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - mountPath: /dev/shm
+                name: dshm
             env: # user defined environments
               - name: "cut_layer"
                 value: "4"
@@ -44,6 +47,10 @@ spec:
             resources: # user defined resources
               limits:
                 memory: 2Gi
+        volumes:
+          - name: dshm
+            emptyDir:
+              medium: Memory
   trainingWorkers:
     - dataset:
         name: "edge1-surface-defect-detection-dataset"

@@ -18,7 +18,6 @@ from sedna.core.federated_learning import FederatedLearningv2
 
 from interface import data, trainer, aggregation, transmitter
 
-
 def main():
     
     fl_model = FederatedLearningv2(

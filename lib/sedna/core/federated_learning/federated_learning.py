@@ -148,7 +148,7 @@ class FederatedLearning(JobBase):
                     K8sResourceKindStatus.RUNNING.value,
                     task_info_res)
 
-class FederatedLearningv2():
+class FederatedLearningv2(JobBase):
     def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None) -> None:
         # set parameters
         if data != None:

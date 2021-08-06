@@ -264,7 +264,7 @@ class AggregationServer(BaseServer):
         return WSClientInfoList(clients=server.client_list)
 
 class AggregationServerv2():
-    def __init__(self, trainer=None, aggregation=None, transmitter=None, choose=None) -> None:
+    def __init__(self, trainer=None, aggregation=None, transmitter=None, chooser=None) -> None:
         # set parameters
         if trainer != None:
             Config.trainer = Config.namedtuple_from_dict(trainer)
@@ -279,8 +279,8 @@ class AggregationServerv2():
             Config.server.address = transmitter["address"]
             Config.server.port = transmitter["port"]
             
-        if choose != None:
-            Config.clients.per_round = choose["per_round"]
+        if chooser != None:
+            Config.clients.per_round = chooser["per_round"]
         # create a server
         self.server = server_registry.get()
     
