@@ -15,7 +15,7 @@
 from sedna.common.config import Context
 from sedna.service.server import AggregationServerv2
 
-from interface import trainer, aggregation, transmitter
+from interface import data, trainer, aggregation, transmitter
 
 def run_server():
     chooser = {
@@ -23,9 +23,10 @@ def run_server():
     }
     
     server = AggregationServerv2(
+        data = data, 
         trainer=trainer, 
-        aggregation=None, 
-        transmitter=None, 
+        aggregation=aggregation, 
+        transmitter=transmitter, 
         chooser=chooser)
     
     server.start()

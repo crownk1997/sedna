@@ -264,25 +264,42 @@ class AggregationServer(BaseServer):
         return WSClientInfoList(clients=server.client_list)
 
 class AggregationServerv2():
-    def __init__(self, trainer=None, aggregation=None, transmitter=None, chooser=None) -> None:
+    def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None, chooser=None) -> None:
         # set parameters
-        if trainer != None:
-            Config.trainer = Config.namedtuple_from_dict(trainer)
+        server = Config.server._asdict()
+        clients = Config.clients._asdict()
+        datastore = Config.data._asdict()
+        train = Config.trainer._asdict()
+        
+        if data != None:
+            for xkey in data:
+                datastore[xkey] = data[xkey]
+            Config.data = Config.namedtuple_from_dict(datastore)
             
+        if trainer != None:
+            for xkey in trainer:
+                train[xkey] = trainer[xkey]
+            Config.trainer = Config.namedtuple_from_dict(train)
+
         if aggregation != None:
             Config.algorithm = Config.namedtuple_from_dict(aggregation)
             if aggregation["type"] == "mistnet":
-                Config.clients.type = "mistnet"
-                Config.server.type = "mistnet"
+                clients["type"] = "mistnet"
+                server["type"] = "mistnet"
             
         if transmitter != None:
-            Config.server.address = transmitter["address"]
-            Config.server.port = transmitter["port"]
-            
+            server["address"] = transmitter["address"]
+            server["port"] = transmitter["port"]
+
         if chooser != None:
-            Config.clients.per_round = chooser["per_round"]
+            clients["per_round"] = chooser["per_round"]
+
+        Config.server = Config.namedtuple_from_dict(server)
+        Config.clients = Config.namedtuple_from_dict(clients)
+        
+        Config.store()
         # create a server
         self.server = server_registry.get()
     
-    def start():
+    def start(self):
         self.server.run()

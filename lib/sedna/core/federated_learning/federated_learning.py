@@ -148,29 +148,43 @@ class FederatedLearning(JobBase):
                     K8sResourceKindStatus.RUNNING.value,
                     task_info_res)
 
-class FederatedLearningv2(JobBase):
+class FederatedLearningv2():
     def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None) -> None:
         # set parameters
+        server = Config.server._asdict()
+        clients = Config.clients._asdict()
+        datastore = Config.data._asdict()
+        train = Config.trainer._asdict()
+
         if data != None:
-            Config.data = Config.namedtuple_from_dict(data)
+            for xkey in data:
+                datastore[xkey] = data[xkey]
+            Config.data = Config.namedtuple_from_dict(datastore)
             
         if trainer != None:
-            Config.trainer = Config.namedtuple_from_dict(trainer)
-            
+            for xkey in trainer:
+                train[xkey] = trainer[xkey]
+            Config.trainer = Config.namedtuple_from_dict(train)
+
         if aggregation != None:
             Config.algorithm = Config.namedtuple_from_dict(aggregation)
             if aggregation["type"] == "mistnet":
-                Config.clients.type = "mistnet"
-                Config.server.type = "mistnet"
+                clients["type"] = "mistnet"
+                clients["do_test"] = False
+                server["type"] = "mistnet"
             
         if transmitter != None:
-            Config.server.address = transmitter["address"]
-            Config.server.port = transmitter["port"]
+            server["address"] = transmitter["address"]
+            server["port"] = transmitter["port"]
+
+        Config.server = Config.namedtuple_from_dict(server)
+        Config.clients = Config.namedtuple_from_dict(clients)
             
+        Config.store()
         # create a client
         self.client = client_registry.get()
         self.client.configure()
     
-    def train():
+    def train(self):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.client.start_client())

@@ -3,32 +3,32 @@ kind: FederatedLearningJob
 metadata:
   name: yolo-v5
 spec:
-  stopCondition:
-    operator: "or" # and
-    conditions:
-      - operator: ">"
-        threshold: 100
-        metric: rounds
-      - operator: ">"
-        threshold: 0.95
-        metric: target_accuracy
-      - operator: "<"
-        threshold: 0.03
-        metric: delta_loss
-  transimitter:
-    transimitterAlgorithms:
-      - name: "simple" # simple, adaptive_freezing, adaptive_sync ...
-  aggregationTrigger:
-    condition:
-      operator: ">"
-      threshold: 5
-      metric: num_of_select_clients
+  # stopCondition:
+  #   operator: "or" # and
+  #   conditions:
+  #     - operator: ">"
+  #       threshold: 100
+  #       metric: rounds
+  #     - operator: ">"
+  #       threshold: 0.95
+  #       metric: target_accuracy
+  #     - operator: "<"
+  #       threshold: 0.03
+  #       metric: delta_loss
+  # transimitter:
+  #   transimitterAlgorithms:
+  #     - name: "simple" # simple, adaptive_freezing, adaptive_sync ...
+  # aggregationTrigger:
+  #   condition:
+  #     operator: ">"
+  #     threshold: 5
+  #     metric: num_of_select_clients
   aggregationWorker:
     model:
-      name: "surface-defect-detection-model"
+      name: "yolo-v5-model"
     template:
       spec:
-        nodeName: "cloud"
+        nodeName: "sedna-control-plane"
         containers:
           - image: kubeedge/sedna-fl-aggregation:mistnetyolo
             name: agg-worker
@@ -53,10 +53,10 @@ spec:
               medium: Memory
   trainingWorkers:
     - dataset:
-        name: "edge1-surface-defect-detection-dataset"
+        name: "coco-dataset"
       template:
         spec:
-          nodeName: "edge1"
+          nodeName: "edge-node"
           containers:
             - image: kubeedge/sedna-fl-train:mistnetyolo
               name: train-worker

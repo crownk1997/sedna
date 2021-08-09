@@ -1,5 +1,4 @@
 
-
 data = {
     "datasource": "YOLO", 
     "data_params": "./coco128.yaml", 
@@ -98,6 +97,7 @@ data = {
         "hair drier",
         "toothbrush",
     ], 
+    "partition_size": 128,
 }
     
 trainer = {
@@ -106,10 +106,10 @@ trainer = {
     "target_accuracy": 0.99,
     "epochs": 500,
     "batch_size": 16,
-    "optimizer": SGD,
-    "linear_lr": false,
+    "optimizer": "SGD",
+    "linear_lr": False,
     # The machine learning model 
-    "model_name": yolov5,
+    "model_name": "yolov5",
     "model_config": "./yolov5s.yaml",
     "train_params": "./hyp.scratch.yaml"
 }
