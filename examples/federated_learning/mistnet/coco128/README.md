@@ -60,11 +60,11 @@ kubectl create -f - <<EOF
 apiVersion: sedna.io/v1alpha1
 kind: Dataset
 metadata:
-  name: "edge1-mistnet-on-mnist-dataset"
+  name: "coco-dataset"
 spec:
-  url: "/data/1/"
-  format: "pt"
-  nodeName: $EDGE1_NODE
+  url: "/data/test.txt"
+  format: "txt"
+  nodeName: edge-node
 EOF
 ```
 
@@ -74,11 +74,11 @@ kubectl create -f - <<EOF
 apiVersion: sedna.io/v1alpha1
 kind: Dataset
 metadata:
-  name: "edge2-mistnet-on-mnist-dataset"
+  name: "coco-dataset"
 spec:
-  url: "/data/2/"
-  format: "pt"
-  nodeName: $EDGE2_NODE
+  url: "/data/test.txt"
+  format: "txt"
+  nodeName: edge-node
 EOF
 ```
 
@@ -103,9 +103,9 @@ kubectl create -f - <<EOF
 apiVersion: sedna.io/v1alpha1
 kind: Model
 metadata:
-  name: "mistnet-on-mnist-pretrained-model"
+  name: "yolo-v5-model"
 spec:
-  url: "/model"
+  url: "/model/yolo.pb"
   format: "pb"
 EOF
 ```
