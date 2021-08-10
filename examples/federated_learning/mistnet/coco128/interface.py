@@ -121,6 +121,6 @@ aggregation = {
 }
     
 transmitter = {
-    "address": "127.0.0.1",
-    "port": 8000
+    "address": "0.0.0.0",
+    "port": 7363
 }

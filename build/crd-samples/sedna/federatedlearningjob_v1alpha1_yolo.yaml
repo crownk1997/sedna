@@ -46,7 +46,7 @@ spec:
               - name: "batch_size"
             resources: # user defined resources
               limits:
-                memory: 2Gi
+                memory: 12Gi
         volumes:
           - name: dshm
             emptyDir:
@@ -61,6 +61,7 @@ spec:
             - image: kubeedge/sedna-fl-train:mistnetyolo
               name: train-worker
               imagePullPolicy: IfNotPresent
+              args: ["-i", "1"]
               env: # user defined environments
                 - name: "batch_size"
                   value: "32"

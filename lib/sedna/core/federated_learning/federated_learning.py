@@ -21,6 +21,7 @@ from sedna.common.class_factory import ClassFactory, ClassType
 from sedna.service.client import AggregationClient
 from sedna.common.constant import K8sResourceKindStatus
 
+import sys
 import asyncio
 from plato.clients import registry as client_registry
 from plato.config import Config
@@ -174,8 +175,10 @@ class FederatedLearningv2():
                 server["type"] = "mistnet"
             
         if transmitter != None:
-            server["address"] = transmitter["address"]
-            server["port"] = transmitter["port"]
+            # server["address"] = transmitter["address"]
+            # server["port"] = transmitter["port"]
+            server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
+            server["port"] = Context.get_parameters("AGG_PORT", transmitter["port"])
 
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
@@ -186,5 +189,8 @@ class FederatedLearningv2():
         self.client.configure()
     
     def train(self):
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(self.client.start_client())
+        if int(sys.version[2]) <= 6:
+            loop = asyncio.get_event_loop()
+            loop.run_until_complete(self.client.start_client())
+        else:
+            asyncio.run(self.client.start_client())

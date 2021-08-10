@@ -17,6 +17,9 @@ from sedna.service.server import AggregationServerv2
 
 from interface import data, trainer, aggregation, transmitter
 
+import os
+import logging
+
 def run_server():
     chooser = {
         "per_round": 1

@@ -31,8 +31,9 @@ from sedna.common.log import LOGGER
 from sedna.common.utils import get_host_ip
 from .base import BaseServer
 
-from plato.servers import registry as server_registry
+import logging
 from plato.config import Config
+from plato.servers import registry as server_registry
 
 __all__ = ('AggregationServer', 'AggregationServerv2')
 
@@ -290,9 +291,13 @@ class AggregationServerv2():
         if transmitter != None:
             server["address"] = transmitter["address"]
             server["port"] = transmitter["port"]
+            # server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
+            # server["port"] = int(Context.get_parameters("AGG_PORT", str(transmitter["port"])))
 
         if chooser != None:
             clients["per_round"] = chooser["per_round"]
+        
+        logging.info("[Test] address %s, port %s", server["address"], server["port"])
 
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
