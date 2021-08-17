@@ -5,7 +5,7 @@ RUN apt update \
 
 COPY ./lib/requirements.txt /home
 
-RUN pip install -r /home/requirements.txt
+RUN python -m pip install --upgrade pip
 
 RUN pip install -r /home/requirements.txt
 
