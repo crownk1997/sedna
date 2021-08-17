@@ -283,7 +283,8 @@ class AggregationServerv2():
             Config.trainer = Config.namedtuple_from_dict(train)
 
         if transmitter != None:
-            server = transmitter
+            for key in transmitter.keys():
+                server[key] = transmitter[key]
             
         if aggregation != None:
             Config.algorithm = Config.namedtuple_from_dict(aggregation)
