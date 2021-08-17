@@ -5,6 +5,8 @@ RUN apt update \
 
 COPY ./lib/requirements.txt /home
 
+RUN python -m pip install --upgrade pip
+
 RUN pip install -r /home/requirements.txt
 
 ENV PYTHONPATH "/home/lib:/home/plato:/home/plato/packages/yolov5"

@@ -7,6 +7,8 @@ COPY ./lib/requirements.txt /home
 
 RUN pip install -r /home/requirements.txt
 
+RUN pip install -r /home/requirements.txt
+
 ENV PYTHONPATH "/home/lib:/home/plato:/home/plato/packages/yolov5"
 
 COPY ./lib /home/lib
