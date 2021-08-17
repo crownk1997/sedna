@@ -282,15 +282,15 @@ class AggregationServerv2():
                 train[xkey] = trainer[xkey]
             Config.trainer = Config.namedtuple_from_dict(train)
 
+        if transmitter != None:
+            server = transmitter
+            
         if aggregation != None:
             Config.algorithm = Config.namedtuple_from_dict(aggregation)
             if aggregation["type"] == "mistnet":
                 clients["type"] = "mistnet"
                 server["type"] = "mistnet"
-            
-        if transmitter != None:
-            server["address"] = transmitter["address"]
-            server["port"] = transmitter["port"]
+                
             # server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
             # server["port"] = int(Context.get_parameters("AGG_PORT", str(transmitter["port"])))
 
@@ -307,4 +307,4 @@ class AggregationServerv2():
         self.server = server_registry.get()
     
     def start(self):
-        self.server.run()
+        self.server.run() 

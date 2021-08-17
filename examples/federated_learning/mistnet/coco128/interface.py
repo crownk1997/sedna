@@ -122,5 +122,9 @@ aggregation = {
     
 transmitter = {
     "address": "0.0.0.0",
-    "port": 7363
+    "port": 7363,
+    "s3_endpoint_url": "https://obs.cn-south-1.myhuaweicloud.com",
+    "s3_bucket": "plato",
+    "access_key": "",
+    "secret_key": ""
 }

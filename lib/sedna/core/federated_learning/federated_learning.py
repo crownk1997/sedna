@@ -179,6 +179,10 @@ class FederatedLearningv2():
             # server["port"] = transmitter["port"]
             server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
             server["port"] = Context.get_parameters("AGG_PORT", transmitter["port"])
+            server["s3_endpoint_url"] = transmitter["s3_endpoint_url"]
+            server["s3_bucket"] = transmitter["s3_bucket"]
+            server["access_key"] = transmitter["access_key"]
+            server["secret_key"] = transmitter["secret_key"]
 
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
