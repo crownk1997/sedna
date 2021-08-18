@@ -15,7 +15,7 @@
 from sedna.common.config import Context
 from sedna.service.server import AggregationServerv2
 
-from interface import data, trainer, aggregation, transmitter
+from interface import Dataset, Estimator, Aggregation, Transmitter
 
 import os
 import logging
@@ -24,10 +24,14 @@ def run_server():
     chooser = {
         "per_round": 1
     }
+    data = Dataset()
+    estimator = Estimator()
+    aggregation = Aggregation()
+    transmitter = Transmitter()
     
     server = AggregationServerv2(
-        data = data, 
-        trainer=trainer, 
+        data=data, 
+        estimator=estimator, 
         aggregation=aggregation, 
         transmitter=transmitter, 
         chooser=chooser)

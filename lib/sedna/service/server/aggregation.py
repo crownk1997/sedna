@@ -265,7 +265,7 @@ class AggregationServer(BaseServer):
         return WSClientInfoList(clients=server.client_list)
 
 class AggregationServerv2():
-    def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None, chooser=None) -> None:
+    def __init__(self, data=None, estimator=None, aggregation=None, transmitter=None, chooser=None) -> None:
         # set parameters
         server = Config.server._asdict()
         clients = Config.clients._asdict()
@@ -273,27 +273,26 @@ class AggregationServerv2():
         train = Config.trainer._asdict()
         
         if data != None:
-            for xkey in data:
-                datastore[xkey] = data[xkey]
+            for xkey in data.parameters:
+                datastore[xkey] = data.parameters[xkey]
             Config.data = Config.namedtuple_from_dict(datastore)
             
-        if trainer != None:
-            for xkey in trainer:
-                train[xkey] = trainer[xkey]
+        self.model = None
+        if estimator != None:
+            self.model = estimator.model
+            for xkey in estimator.hyperparameters:
+                train[xkey] = estimator.hyperparameters[xkey]
             Config.trainer = Config.namedtuple_from_dict(train)
 
         if transmitter != None:
-            for key in transmitter.keys():
-                server[key] = transmitter[key]
+            for key in transmitter.parameters:
+                server[key] = transmitter.parameters[key]
             
         if aggregation != None:
-            Config.algorithm = Config.namedtuple_from_dict(aggregation)
-            if aggregation["type"] == "mistnet":
+            Config.algorithm = Config.namedtuple_from_dict(aggregation.parameters)
+            if aggregation.parameters["type"] == "mistnet":
                 clients["type"] = "mistnet"
                 server["type"] = "mistnet"
-                
-            # server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
-            # server["port"] = int(Context.get_parameters("AGG_PORT", str(transmitter["port"])))
 
         if chooser != None:
             clients["per_round"] = chooser["per_round"]
@@ -305,7 +304,7 @@ class AggregationServerv2():
         
         Config.store()
         # create a server
-        self.server = server_registry.get()
+        self.server = server_registry.get(model=self.model)
     
     def start(self):
         self.server.run() 

@@ -150,7 +150,7 @@ class FederatedLearning(JobBase):
                     task_info_res)
 
 class FederatedLearningv2():
-    def __init__(self, data=None, trainer=None, aggregation=None, transmitter=None) -> None:
+    def __init__(self, data=None, estimator=None, aggregation=None, transmitter=None) -> None:
         # set parameters
         server = Config.server._asdict()
         clients = Config.clients._asdict()
@@ -158,20 +158,21 @@ class FederatedLearningv2():
         train = Config.trainer._asdict()
 
         if data != None:
-            for xkey in data:
-                datastore[xkey] = data[xkey]
+            for xkey in data.parameters:
+                datastore[xkey] = data.parameters[xkey]
             Config.data = Config.namedtuple_from_dict(datastore)
-            
-        if trainer != None:
-            for xkey in trainer:
-                train[xkey] = trainer[xkey]
+        
+        self.model = None
+        if estimator != None:
+            self.model = estimator.model
+            for xkey in estimator.hyperparameters:
+                train[xkey] = estimator.hyperparameters[xkey]
             Config.trainer = Config.namedtuple_from_dict(train)
 
         if aggregation != None:
-            Config.algorithm = Config.namedtuple_from_dict(aggregation)
-            if aggregation["type"] == "mistnet":
+            Config.algorithm = Config.namedtuple_from_dict(aggregation.parameters)
+            if aggregation.parameters["type"] == "mistnet":
                 clients["type"] = "mistnet"
-                clients["do_test"] = False
                 server["type"] = "mistnet"
             
         if transmitter != None:
@@ -179,17 +180,17 @@ class FederatedLearningv2():
             # server["port"] = transmitter["port"]
             server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
             server["port"] = Context.get_parameters("AGG_PORT", transmitter["port"])
-            server["s3_endpoint_url"] = transmitter["s3_endpoint_url"]
-            server["s3_bucket"] = transmitter["s3_bucket"]
-            server["access_key"] = transmitter["access_key"]
-            server["secret_key"] = transmitter["secret_key"]
+            server["s3_endpoint_url"] = transmitter.parameters["s3_endpoint_url"]
+            server["s3_bucket"] = transmitter.parameters["s3_bucket"]
+            server["access_key"] = transmitter.parameters["access_key"]
+            server["secret_key"] = transmitter.parameters["secret_key"]
 
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
             
         Config.store()
         # create a client
-        self.client = client_registry.get()
+        self.client = client_registry.get(model=self.model)
         self.client.configure()
     
     def train(self):

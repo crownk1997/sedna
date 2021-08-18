@@ -16,13 +16,17 @@
 from sedna.common.config import Context, BaseConfig
 from sedna.core.federated_learning import FederatedLearningv2
 
-from interface import data, trainer, aggregation, transmitter
+from interface import Dataset, Estimator, Aggregation, Transmitter
 
 def main():
+    data = Dataset()
+    estimator = Estimator()
+    aggregation = Aggregation()
+    transmitter = Transmitter()
     
     fl_model = FederatedLearningv2(
         data=data, 
-        trainer=trainer, 
+        estimator=estimator, 
         aggregation=aggregation, 
         transmitter=transmitter)
 
