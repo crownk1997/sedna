@@ -33,9 +33,6 @@ spec:
           - image: kubeedge/sedna-fl-aggregation:mistnetyolo
             name: agg-worker
             imagePullPolicy: IfNotPresent
-            volumeMounts:
-              - mountPath: /dev/shm
-                name: dshm
             env: # user defined environments
               - name: "cut_layer"
                 value: "4"
@@ -46,11 +43,7 @@ spec:
               - name: "batch_size"
             resources: # user defined resources
               limits:
-                memory: 12Gi
-        volumes:
-          - name: dshm
-            emptyDir:
-              medium: Memory
+                memory: 8Gi
   trainingWorkers:
     - dataset:
         name: "coco-dataset"

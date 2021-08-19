@@ -302,7 +302,7 @@ class AggregationServerv2():
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
         
-        Config.store()
+        # Config.store()
         # create a server
         self.server = server_registry.get(model=self.model)
     

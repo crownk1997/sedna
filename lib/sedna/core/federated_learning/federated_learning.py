@@ -178,8 +178,8 @@ class FederatedLearningv2():
         if transmitter != None:
             # server["address"] = transmitter["address"]
             # server["port"] = transmitter["port"]
-            server["address"] = Context.get_parameters("AGG_IP", transmitter["address"])
-            server["port"] = Context.get_parameters("AGG_PORT", transmitter["port"])
+            server["address"] = Context.get_parameters("AGG_IP", transmitter.parameters["address"])
++           server["port"] = Context.get_parameters("AGG_PORT", transmitter.parameters["port"])
             server["s3_endpoint_url"] = transmitter.parameters["s3_endpoint_url"]
             server["s3_bucket"] = transmitter.parameters["s3_bucket"]
             server["access_key"] = transmitter.parameters["access_key"]
@@ -188,7 +188,7 @@ class FederatedLearningv2():
         Config.server = Config.namedtuple_from_dict(server)
         Config.clients = Config.namedtuple_from_dict(clients)
             
-        Config.store()
+        # Config.store()
         # create a client
         self.client = client_registry.get(model=self.model)
         self.client.configure()
