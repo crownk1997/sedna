@@ -12,4 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .aggregation import FedAvg, MistNet
+
+import abc
+
+
+class AbstractClientChoose(metaclass=abc.ABCMeta):
+
+    def __init__(self):
+        pass
+
+
+class SimpleClientChoose(AbstractClientChoose):
+
+    def __init__(self, per_round=1):
+        super().__init__()
+        self.per_round = per_round
