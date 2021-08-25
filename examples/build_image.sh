@@ -22,6 +22,8 @@ IMAGE_TAG=${IMAGE_TAG:-v0.3.0}
 EXAMPLE_REPO_PREFIX=${IMAGE_REPO}/sedna-example-
 
 dockerfiles=(
+federated-learning-mistnet-yolo-aggregator.Dockerfile
+federated-learning-mistnet-yolo-client.Dockerfile
 federated-learning-surface-defect-detection-aggregation.Dockerfile
 federated-learning-surface-defect-detection-train.Dockerfile
 incremental-learning-helmet-detection.Dockerfile
