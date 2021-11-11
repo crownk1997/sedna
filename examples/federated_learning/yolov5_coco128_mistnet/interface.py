@@ -17,10 +17,10 @@ from sedna.algorithms.client_choose import SimpleClientChoose
 from sedna.common.config import Context
 from sedna.core.federated_learning import FederatedLearningV2
 
-from plato.examples.nnrt.nnrt_trainer_yolo import Trainer
-from plato.examples.nnrt.nnrt_algorithm.mistnet import Algorithm
-from plato.examples.nnrt.nnrt_models.acl_inference import Inference
-from plato.examples.nnrt.nnrt_datasource_yolo import DataSource
+from examples.nnrt.nnrt_trainer_yolo import Trainer
+from examples.nnrt.nnrt_algorithm.mistnet import Algorithm
+from examples.nnrt.nnrt_models.acl_inference import Inference
+from examples.nnrt.nnrt_datasource_yolo import DataSource
 simple_chooser = SimpleClientChoose(per_round=1)
 
 # It has been determined that mistnet is required here.
