@@ -20,6 +20,7 @@ from sedna.core.federated_learning import FederatedLearningV2
 from plato.examples.nnrt.nnrt_trainer_yolo import Trainer
 from plato.examples.nnrt.nnrt_algorithm.mistnet import Algorithm
 from plato.examples.nnrt.nnrt_models.acl_inference import Inference
+from plato.examples.nnrt.nnrt_datasource_yolo import DataSource
 simple_chooser = SimpleClientChoose(per_round=1)
 
 # It has been determined that mistnet is required here.
@@ -141,6 +142,7 @@ class Estimator:
         self.pretrained = None
         self.trainer = Trainer(model=self.model)
         self.algorithm = Algorithm(self.trainer)
+        self.datasource = DataSource()
         self.saved = None
         self.hyperparameters = {
             "type": "yolov5",
@@ -152,6 +154,6 @@ class Estimator:
             "linear_lr": False,
             # The machine learning model
             "model_name": "yolov5",
-            "model_config": "./yolov5s.yaml",
+            "model_config": "./yolov5x.yaml",
             "train_params": "./hyp.scratch.yaml"
         }
