@@ -23,6 +23,7 @@ def main():
     data.parameters["data_path"] = BaseConfig.train_dataset_url.replace("robot.txt", "")
     data.parameters["train_path"] = os.path.join(data.parameters["data_path"], "./coco128/images/train2017/")
     data.parameters["test_path"] = data.parameters["train_path"]
+    data.parameters["train_path"] = "/data/1/COCO/coco128/images/train2017"
     fl_model = FederatedLearningV2(
         data=data,
         estimator=estimator,
